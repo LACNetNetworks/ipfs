@@ -1,0 +1,20 @@
+---
+node:
+  ipfs:
+    resources:
+      cpuLimit: 0.5
+      cpuRequest: 0.25
+      memLimit: "1G"
+      memRequest: "0.5G"
+    dataPath: /data/ipfs
+    swarmKey: /keys/swarm.key
+    libP2PForce: '"1"'
+volumen:
+  resources:
+    storage: 
+      data: 10Gi
+      staging: 1Gi
+deploy:
+  logging: DEBUG
+  publicIP:  34.66.183.184
+

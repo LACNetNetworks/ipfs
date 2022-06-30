@@ -1,0 +1,39 @@
+---
+cluster:
+  provider: google  # choose from: google | aws | azure
+  cloudNativeServices: false # set to true to use Cloud Native Services (SecretsManager and IAM for AWS; KeyVault & Managed Identities for Azure)
+  reclaimPolicy: Delete # set to either Retain or Delete
+storage:
+  sizeLimit: "20Gi"
+  pvcSizeLimit: "20Gi"
+  # NOTE: when you set this to Retain, the volume WILL persist after the chart is delete and you need to manually delete it
+  reclaimPolicy: "Delete" # choose from: Delete | Retain 
+
+# fixes permissions of volumes becuase besu runs as user `besu` and volumes prefer `root`
+volumePermissionsFix:
+  - google
+  - aws
+
+node:
+  ipfs:
+    resources:
+      cpuLimit: 0.5
+      cpuRequest: 0.25
+      memLimit: "1G"
+      memRequest: "0.5G"
+    p2p:
+      port: 4001
+    api:
+      port: 8080
+    gateway:
+      port: 5001
+    dataPath: /data/ipfs
+    stagingPath: /export
+image:
+  ipfs:
+    repository: lacnetnetworks/ipfs
+    tag: 0.13.0
+    pullPolicy: IfNotPresent
+
+
+

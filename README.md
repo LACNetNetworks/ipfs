@@ -1,5 +1,10 @@
 # Deploy IPFS on NODE Lacchain 
 
+* Quickly deploy an ipfs node using **docker** [here](https://github.com/LACNetNetworks/ipfs/blob/master/DEPLOY_NODE_DOCKER.md).
+
+* If you want to deploy an ipfs node on **kubernetes** following the instructions [here](https://github.com/LACNetNetworks/ipfs/blob/master/DEPLOY_NODE_HELM.md).
+
+
 * Bellow you will find instructions about deployment  of ipfs  peers lacchain using Ansible. This implies that it will be executed from a local machine to a remote server. The local machine and the remote server will communicate via ssh.
 
 * The installation with ansible provided is compatible with **Ubuntu** 

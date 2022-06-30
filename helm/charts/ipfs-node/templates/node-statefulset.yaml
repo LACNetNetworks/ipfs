@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "ipfs-node.fullname" . }}
+  labels:
+    app: {{ template "ipfs-node.fullname" . }}
+    chart: {{ template "ipfs-node.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    namespace: {{ .Release.Namespace }}
+    component: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ include "ipfs-node.fullname" . }}
+    helm.sh/chart: {{ include "ipfs-node.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ template "ipfs-node.fullname" . }}
+      release: {{ .Release.Name }}
+      component: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ include "ipfs-node.fullname" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  serviceName: {{ include "ipfs-node.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "ipfs-node.fullname" . }}
+        release: {{ .Release.Name }}
+        component: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "ipfs-node.fullname" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: {{ .Release.Name }}
+    spec:
+      containers:      
+        - name: {{ .Release.Name }}-ipfs
+          image: {{ .Values.image.ipfs.repository }}:{{ .Values.image.ipfs.tag }}
+          imagePullPolicy: {{ .Values.image.ipfs.pullPolicy }}
+          resources:
+            requests:
+              cpu: "{{ .Values.node.ipfs.resources.cpuRequest }}"
+              memory: "{{ .Values.node.ipfs.resources.memRequest }}"
+            limits:
+              cpu: "{{ .Values.node.ipfs.resources.cpuLimit }}"
+              memory: "{{ .Values.node.ipfs.resources.memLimit }}"
+          env:
+            - name: IPFS_LOGGING
+              value: {{ .Values.deploy.logging }}
+            - name: IPFS_PATH
+              value: {{ .Values.node.ipfs.dataPath }}
+            - name: IPFS_SWARM_KEY_FILE
+              value: {{ .Values.node.ipfs.swarmKey }}
+            - name: LIBP2P_FORCE_PNET
+              value: {{ .Values.node.ipfs.libP2PForce }}
+          volumeMounts:
+            - name: data
+              mountPath: {{ .Values.node.ipfs.dataPath }}
+            - name: staging
+              mountPath: {{ .Values.node.ipfs.stagingPath }}
+          ports:
+            - name: p2p
+              containerPort: {{ .Values.node.ipfs.p2p.port }}
+              protocol: TCP
+            - name: api
+              containerPort: {{ .Values.node.ipfs.api.port }}
+              protocol: TCP
+            - name: gateway
+              containerPort: {{ .Values.node.ipfs.gateway.port }}
+              protocol: TCP
+      securityContext:
+        fsGroup: 2000
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: {{ include "ipfs-node.fullname" . }}-data-pvc
+      - name: staging
+        persistentVolumeClaim:
+          claimName: {{ include "ipfs-node.fullname" . }}-staging-pvc 
+     

@@ -1,0 +1,14 @@
+apiVersion: v1
+version: 0.1.0
+appVersion: 0.13.0
+name: ipfs-node
+description: IPFS nodes for a private network
+keywords:
+  - lacchain
+  - ipfs
+home: https://lacnet.lacchain.net/
+sources:
+  - https://github.com/LACNetNetworks/ipfs
+maintainers:
+  - name: LACNet
+    email: tech.support@lac-net.net

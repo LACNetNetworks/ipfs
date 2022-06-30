@@ -1,0 +1,17 @@
+version: "3.6"
+services:
+  registry: 
+    image: lacnetnetworks/ipfs:0.13.0
+    container_name: ipfs-lacchain
+    environment:
+      IPFS_SWARM_KEY_FILE: /keys/swarm.key
+      IPFS_PATH: /data/ipfs  
+      LIBP2P_FORCE_PNET: 1 
+      IPFS_LOGGING: INFO
+    ports:
+      - 4001:4001
+      - 8080:8080
+      - 5001:5001
+    volumes:
+      - ./ipfs1/staging:/export 
+      - ./ipfs1/data:/data/ipfs
