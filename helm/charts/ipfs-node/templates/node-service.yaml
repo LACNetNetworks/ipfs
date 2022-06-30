@@ -1,0 +1,39 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "ipfs-node.fullname" . }}
+  labels:
+    app: {{ template "ipfs-node.fullname" . }}
+    chart: {{ template "ipfs-node.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    namespace: {{ .Release.Namespace }}
+    app.kubernetes.io/name: {{ include "ipfs-node.fullname" . }}
+    helm.sh/chart: {{ include "ipfs-node.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: LoadBalancer
+  selector:
+    app: {{ template "ipfs-node.fullname" . }}
+    release: {{ .Release.Name }}
+    component: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ include "ipfs-node.fullname" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  ports:
+    - name: p2p
+      port: {{ .Values.node.ipfs.p2p.port }}
+      targetPort: p2p
+      protocol: TCP
+    - name: api
+      port: {{ .Values.node.ipfs.api.port }}
+      targetPort: api
+      protocol: TCP
+    - name: gateway
+      port: {{ .Values.node.ipfs.gateway.port }}
+      targetPort: gateway
+      protocol: TCP  
+  loadBalancerIP: {{ .Values.deploy.publicIP }}
