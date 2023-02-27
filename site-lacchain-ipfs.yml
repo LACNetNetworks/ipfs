@@ -1,6 +1,10 @@
 - hosts: ipfs
   gather_facts: yes
   become: yes
+  vars_prompt:
+    - name: "networkT"
+      prompt: "************************\n[0]:mainnet-omega\n[1]:open-protestnet\nPlease, choose in which network are you deploying"
+      private: no
   vars:
     install: true
   roles:
