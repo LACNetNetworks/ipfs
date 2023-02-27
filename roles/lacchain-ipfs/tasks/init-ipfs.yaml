@@ -11,16 +11,25 @@
 
 - name: Copy bootstrap list file
   copy:
-    src: "{{ role_path }}/files/bootstrap_list"
-    dest: /tmp/
+    src: "{{ role_path }}/files/bootstrap_main_list"
+    dest: /tmp/bootstrap_list
     mode: 0440
+  when: (networkT == '0') 
+
+- name: Copy bootstrap list file
+  copy:
+    src: "{{ role_path }}/files/bootstrap_open_protest_list"
+    dest: /tmp/bootstrap_list
+    mode: 0440
+  when: (networkT == '1') 
 
 - name: remove bootstrap
   shell: ipfs bootstrap rm --all
 
 - name: add bootstrap
-#  shell: ipfs bootstrap add /ip4/192.168.10.1/tcp/4001/ipfs/QmQVvZEmvjhYgsyEC7NvMn8EWf131EcgTXFFJQYGSz4Y83
   shell: cat /tmp/bootstrap_list | ipfs bootstrap add
+  
+
 
 - name: set private network
   shell: export LIBP2P_FORCE_PNET=1
@@ -33,9 +42,17 @@
 
 - name: Copy swarm.key
   copy:
-    src: "{{ role_path }}/files/swarm.key"
+    src: "{{ role_path }}/files/swarm-main.key"
     dest: "{{ ipfs_swarm }}/swarm.key"
     mode: 0550
+  when: (networkT == '0') 
+
+- name: Copy swarm.key
+  copy:
+    src: "{{ role_path }}/files/swarm-open-protest.key"
+    dest: "{{ ipfs_swarm }}/swarm.key"
+    mode: 0550
+  when: (networkT == '1') 
 
 - name: Enable service ipfs
   service:

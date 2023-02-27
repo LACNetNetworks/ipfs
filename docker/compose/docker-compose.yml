@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   registry: 
-    image: lacnetnetworks/ipfs:0.13.0
+    image: lacnetnetworks/ipfs-open-protest:0.13.0
     container_name: ipfs-lacchain
     environment:
       IPFS_SWARM_KEY_FILE: /keys/swarm.key

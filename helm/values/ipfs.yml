@@ -15,6 +15,7 @@ volumen:
       data: 10Gi
       staging: 1Gi
 deploy:
-  logging: DEBUG
-  publicIP:  34.66.183.184
+  network: open-protest-net # choose from: open-protest-net | main-net
+  logging: INFO
+  publicIP:  34.123.207.42
 

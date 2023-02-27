@@ -31,7 +31,9 @@ node:
     stagingPath: /export
 image:
   ipfs:
-    repository: lacnetnetworks/ipfs
+    repository:
+      mainnet: lacnetnetworks/ipfs-main
+      openprotest: lacnetnetworks/ipfs-open-protest
     tag: 0.13.0
     pullPolicy: IfNotPresent
 
