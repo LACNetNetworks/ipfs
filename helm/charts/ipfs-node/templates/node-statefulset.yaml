@@ -40,7 +40,11 @@ spec:
     spec:
       containers:      
         - name: {{ .Release.Name }}-ipfs
-          image: {{ .Values.image.ipfs.repository }}:{{ .Values.image.ipfs.tag }}
+{{- if eq .Values.deploy.network "open-protest-net" }}
+          image: {{ .Values.image.ipfs.repository.openprotest }}:{{ .Values.image.ipfs.tag }}
+{{- else }}
+          image: {{ .Values.image.ipfs.repository.mainnet }}:{{ .Values.image.ipfs.tag }}
+{{- end }} 
           imagePullPolicy: {{ .Values.image.ipfs.pullPolicy }}
           resources:
             requests:
